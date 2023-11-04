@@ -1,4 +1,4 @@
-package com.abhinav.security;
+package com.innovator.security;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
