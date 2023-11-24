@@ -11,6 +11,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.innovator.security.enums.Role.TEMP;
+
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -25,9 +28,10 @@ public class SecurityConfiguration {
         httpSecurity
                 .csrf()
                 .disable()
-                .authorizeHttpRequests()
+                .authorizeRequests()
                 .requestMatchers("/api/v1/auth/**")
                 .permitAll()
+                .requestMatchers("/api/v1/temp/**").hasRole(TEMP.name())
                 .anyRequest()
                 .authenticated()
                 .and()
