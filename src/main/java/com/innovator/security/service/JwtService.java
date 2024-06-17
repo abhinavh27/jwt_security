@@ -32,10 +32,10 @@ public class JwtService {
     }
 
     private Boolean isTokenExpired(String token) {
-        return extractToken(token).before(new Date());
+        return extractExpiration(token).before(new Date());
     }
 
-    private Date extractToken(String token) {
+    private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 

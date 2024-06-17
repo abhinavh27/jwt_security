@@ -11,6 +11,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.innovator.security.enums.Role.ADMIN;
+import static com.innovator.security.enums.Role.USER;
+
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -20,14 +24,30 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    private static final String[] WHITE_LIST_URL = {
+            "/api/v1/auth/**",
+            "/api-docs",
+            "/v2/api-docs",
+            "v2/api-docs/**",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-ui.html"};
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf()
                 .disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**")
+                .authorizeRequests()
+                .requestMatchers(WHITE_LIST_URL)
                 .permitAll()
+                .requestMatchers("/api/v1/temp/**").hasRole(USER.name())
                 .anyRequest()
                 .authenticated()
                 .and()

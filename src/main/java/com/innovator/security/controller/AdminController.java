@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("api/v1/demo")
-public class DemoController {
+@RequestMapping("api/v1/")
+public class AdminController {
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @GetMapping("/hello")
-    public ResponseEntity<String> sayHello(){
-        return ResponseEntity.ok("Hello from protected endpoint");
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/adminEndpoint")
+    public ResponseEntity<String> someMethod(){
+        return ResponseEntity.ok("Only the person who has admin role in Db can access this");
     }
 }
