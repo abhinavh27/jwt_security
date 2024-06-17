@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public enum Role {
     USER(Collections.emptySet()),
-    ADMIN(Collections.emptySet()),
-    TEMP(Collections.emptySet());
+    ADMIN(Set.of(Permission.READ));
 
     @Getter
     private final Set<Permission> permissions;
