@@ -11,9 +11,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.innovator.security.enums.Role.ADMIN;
-import static com.innovator.security.enums.Role.USER;
-
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +44,6 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .requestMatchers(WHITE_LIST_URL)
                 .permitAll()
-                .requestMatchers("/api/v1/temp/**").hasRole(USER.name())
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -4,12 +4,14 @@ import com.innovator.security.auth.AuthenticationRequest;
 import com.innovator.security.auth.AuthenticationResponse;
 import com.innovator.security.auth.RegisterRequest;
 import com.innovator.security.entity.User;
-import com.innovator.security.enums.Role;
 import com.innovator.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,12 +25,14 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        Set<String> authorities = new HashSet<>();
+        authorities.add(request.getRole().toUpperCase());
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.valueOf(request.getRole().toUpperCase()))
+                .authorities(authorities)
                 .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);

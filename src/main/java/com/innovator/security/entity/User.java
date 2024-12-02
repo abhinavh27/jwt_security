@@ -1,6 +1,5 @@
 package com.innovator.security.entity;
 
-import com.innovator.security.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +10,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 //Lombok annotations
 @Data
@@ -32,12 +32,14 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
+        return authorities.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
     }
 
     @Override
